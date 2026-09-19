@@ -1,6 +1,6 @@
-# Offline Lecture AI & Quiz Generator
+# Lectoria — Offline Lecture AI & Quiz Generator
 
-**Offline Lecture AI & Quiz Generator** is an offline-first learning application designed to turn lecture materials into interactive quizzes and document-based AI conversations.
+**Lectoria** is an offline-first learning application designed to turn lecture materials into interactive quizzes and document-based AI conversations.
 
 Users can upload **PDF or DOCX lecture files**, organize them into subject folders, generate quizzes from the uploaded content, track their progress, and chat with the lesson using an AI assistant that is strictly limited to the provided material.
 
@@ -549,41 +549,68 @@ Local UI
          └── Chat History
 ```
 
-## Proposed Technologies
+## Tech Stack
 
-### Frontend
-
-The UI can be implemented using a modern local-first web application architecture.
-
-### Document Processing
-
-Potential libraries:
-
-* **PDF.js** — PDF text extraction
-* **Mammoth.js** — DOCX text extraction
-
-### Local Storage
-
-Potential options:
-
-* SQLite
-* IndexedDB
-* Local-first storage layer
-
-### Local AI
-
-Potential options:
-
-* llama.cpp
-* WebLLM
-* ONNX Runtime
-* Other compatible local LLM runtimes
-
-The exact model and runtime can depend on the target platform and available device hardware.
+| Layer            | Technology                                        |
+| ---------------- | ------------------------------------------------- |
+| Framework        | Expo SDK 57 (React Native 0.86, React 19)         |
+| Routing          | Expo Router (file-based navigation)               |
+| Language         | TypeScript (strict mode)                          |
+| State            | Zustand                                           |
+| Database         | SQLite via `expo-sqlite` (versioned migrations)   |
+| Document Parsing | PDF / DOCX / TXT / MD, processed fully on-device  |
+| Local AI         | llama.cpp / ONNX Runtime providers (pluggable)    |
+| Testing          | Jest + jest-expo                                  |
 
 ---
 
-# Privacy
+# Project Structure
+
+```text
+lectoria/
+├── app/            # Expo Router screens (tabs, onboarding, modals)
+├── components/     # Reusable UI, grouped by feature (common, quiz, ai, ...)
+├── database/       # SQLite connection, schema, migrations, repositories
+├── services/       # Business logic (documents, quiz, ai, flashcards, ...)
+├── state/          # Zustand global stores
+├── hooks/          # Reusable data / UI hooks
+├── types/          # Shared TypeScript domain types
+├── theme/          # Design tokens (colors, typography, spacing, themes)
+├── constants/      # Routes, quiz config, file types, app constants
+├── utils/          # Pure helper functions
+├── tests/          # Unit tests mirroring the source tree
+└── assets/         # Images, icons, fonts
+```
+
+---
+
+# Getting Started
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Align native dependency versions with the Expo SDK
+npx expo install --fix
+
+# 3. Start the dev server
+npx expo start
+```
+
+Then press `a` for Android, `i` for iOS, or `w` for web — or scan the QR code
+with the Expo Go app.
+
+Other useful scripts:
+
+```bash
+npm run typecheck   # strict TypeScript check
+npm run lint        # ESLint via Expo
+npm test            # Jest test suite
+```
+
+---
+
+# Core Architecture
 
 The application's main design principle is local processing.
 
@@ -665,6 +692,11 @@ The project focuses on four main ideas:
 
 # Project Status
 
-**Upcoming / In Design Phase**
+**In Development — Foundation Phase**
 
-The project is currently being planned and designed. Development will focus on establishing reliable local document processing, persistent storage, quiz generation, and local AI inference before expanding into advanced study features.
+The full project structure is now in place: Expo Router screen scaffolding
+(onboarding, tabs, subjects, lessons, quizzes, flashcards, AI chat, progress,
+notes, settings), database migrations, service layer, state stores, and shared
+types. Development next focuses on implementing local document processing,
+persistent storage, quiz generation, and local AI inference on top of this
+foundation, before expanding into advanced study features.
